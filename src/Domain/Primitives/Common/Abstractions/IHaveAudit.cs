@@ -4,5 +4,6 @@
     {
         DateTime? LastModified { get; }
         int? LastModifiedBy { get; }
+        int MofificationNumber { get; }
     }
 }
