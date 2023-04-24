@@ -32,7 +32,7 @@ namespace Domain.Core
 
         public void MarkUncommittedDomainEventAsCommitted()
         {
-            throw new NotImplementedException();
+            _uncommittedDomainEvents.Clear();
         }
         public IReadOnlyList<IDomainEvent> DequeueUncommittedDomainEvents()
         {
