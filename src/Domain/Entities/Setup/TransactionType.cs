@@ -18,3 +18,6 @@ public class TransactionType:Entity
     public int CompanyId { get; private set; }
 
 }
+
+
+ 
