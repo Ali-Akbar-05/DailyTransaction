@@ -1,0 +1,12 @@
+﻿using Application.Abstractions.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Infrastructure.Persistence;
+
+public  class ApplicationDbContext: ApiAuthorizationDbContext<ApplicationDbContext>,IDbContext
+{
+}

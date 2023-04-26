@@ -31,5 +31,6 @@ namespace Domain.Entities.Setup
         public DateTime? SubscriptionEndDate { get; private set; }
 
 
+       public Subscription Subscription { get; private set; } = default!;
     }
 }
