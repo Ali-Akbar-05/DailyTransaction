@@ -10,6 +10,6 @@ namespace Domain.Primitives.Common.Abstractions
     {
         bool IsDeleted { get; }
         DateTime? DeletedDate { get; }
-        int? DeletedBy { get; }
+        string? DeletedBy { get; }
     }
 }

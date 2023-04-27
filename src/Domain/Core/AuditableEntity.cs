@@ -11,7 +11,7 @@ namespace Domain.Core
     {
         public DateTime? LastModified { get;private set; } = default!;
 
-        public int? LastModifiedBy { get; private set; } = default!;
+        public string? LastModifiedBy { get; private set; } = default!;
         public int MofificationNumber { get; private set; }    
     }
 }

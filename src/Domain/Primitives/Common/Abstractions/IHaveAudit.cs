@@ -3,7 +3,7 @@
     public interface IHaveAudit : IHaveCreator
     {
         DateTime? LastModified { get; }
-        int? LastModifiedBy { get; }
+        string? LastModifiedBy { get; }
         int MofificationNumber { get; }
     }
 }

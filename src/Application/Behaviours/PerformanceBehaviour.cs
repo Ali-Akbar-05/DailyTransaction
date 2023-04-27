@@ -34,7 +34,7 @@ internal sealed class PerformanceBehaviour<TRequest, TResponse> :     IPipelineB
             var userId = _currentUserService.UserId;
             string userName = string.Empty;
 
-            if (userId > 0)
+            if (!string.IsNullOrEmpty(userId))
             {
                 userName = await _identityService.GetUserNameAsync(userId);
             }

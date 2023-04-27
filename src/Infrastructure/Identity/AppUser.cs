@@ -2,7 +2,7 @@
 
 namespace Infrastructure.Identity;
 
-public class AppUser : IdentityUser<int>
+public class AppUser : IdentityUser
 {
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
