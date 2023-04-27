@@ -8,5 +8,5 @@ namespace Application.Abstractions.Common;
 
 public interface ICurrentUserService
 {
-   int UserId { get; } 
+   string UserId { get; } 
 }

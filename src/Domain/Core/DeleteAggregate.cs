@@ -13,6 +13,6 @@ namespace Domain.Core
 
         public DateTime? DeletedDate { get; private set; } = default!;
 
-        public int? DeletedBy { get; private set; } = default!; 
+        public string? DeletedBy { get; private set; } = default!; 
     }
 }

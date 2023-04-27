@@ -3,5 +3,5 @@
 public interface IHaveCreator
 {
     DateTime CreatedDate { get; }
-    int CreatedBy { get; }
+    string CreatedBy { get; }
 }

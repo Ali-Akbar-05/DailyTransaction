@@ -24,7 +24,7 @@ internal sealed class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest
         var requestName = typeof(TRequest).Name;
         var userId = _currentUserService.UserId;
         string userName = string.Empty;
-        if(userId>0)
+        if(!string.IsNullOrEmpty(userId))
             userName = await _identityService.GetUserNameAsync(userId);
 
         _logger.LogInformation("DL Request : {Name} {@UserId} {@UserName} {@Request}",requestName,userId,userName,request);

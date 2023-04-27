@@ -3,7 +3,7 @@ using Domain.Entities.Setup;
 
 namespace Domain.Entities.Transactions;
 
-public class InvoiceMaster : DeleteAbleEntity
+public class InvoiceMaster : DeleteAggregate
 {
     public int Id { get; private set; }
     public int TransactionTypeId { get; private set; }
