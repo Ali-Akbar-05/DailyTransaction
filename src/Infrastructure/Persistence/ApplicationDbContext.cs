@@ -47,7 +47,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<AppUser>, IDbConte
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly())
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        AddingSofDeletes(builder);
         base.OnModelCreating(builder);
     }
 
@@ -69,7 +70,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<AppUser>, IDbConte
     private static void AddingSofDeletes(ModelBuilder builder)
     {
         var types = builder.Model.GetEntityTypes().Where(x => x.ClrType.IsAssignableTo(typeof(IHaveSoftDelete)));
-        foreach(var entityType in types)
+        foreach (var entityType in types)
         {
             var parameter = Expression.Parameter(entityType.ClrType);
 
