@@ -1,11 +1,11 @@
 ﻿
 https://somee.com/
 
-Database name:	mytransaction
-Full domain name:	mytransaction.mssql.somee.com
-user name : akbardevbd_SQLLogin_2
-password : pot5mjxqhx
-workstation id=mytransaction.mssql.somee.com;packet size=4096;user id=akbardevbd_SQLLogin_2;pwd=pot5mjxqhx;data source=mytransaction.mssql.somee.com;persist security info=False;initial catalog=mytransaction
+####Database name:	mytransaction
+####Full domain name:	mytransaction.mssql.somee.com
+####user name : akbardevbd_SQLLogin_2
+######password : pot5mjxqhx
+####workstation id=mytransaction.mssql.somee.com;packet size=4096;user id=akbardevbd_SQLLogin_2;pwd=pot5mjxqhx;data source=mytransaction.mssql.somee.com;persist security info=False;initial catalog=mytransaction
 
 
-: "Server=mytransaction.mssql.somee.com;Database=mytransaction;Trusted_Connection=True;MultipleActiveResultSets=true;user id=akbardevbd_SQLLogin_2;pwd=pot5mjxqhx;persist security info=False"
+: 

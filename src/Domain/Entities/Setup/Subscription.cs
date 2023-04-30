@@ -8,5 +8,5 @@ public class Subscription : AuditableEntity
     public string Code { get; private set; } = default!;
     public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
-    public int ConditinalDayes { get; private set; }
+    public int ConditinalDayes { get; private set; } = default!;
 }
