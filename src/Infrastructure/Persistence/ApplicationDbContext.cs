@@ -2,11 +2,10 @@
 using Domain.Entities.Setup;
 using Domain.Entities.Transactions;
 using Domain.Primitives.Common.Abstractions;
-using Duende.IdentityServer.EntityFramework.Options;
 using Infrastructure.Identity;
 using Infrastructure.Persistence.Interceptors;
 using MediatR;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Linq.Expressions;
@@ -14,15 +13,14 @@ using System.Reflection;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<AppUser>, IDbContext
+public class ApplicationDbContext : IdentityDbContext<AppUser>, IDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-        IOptions<OperationalStoreOptions> operationalStoreOption,
-        IMediator mediator,
-        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options, operationalStoreOption)
+       IMediator mediator,
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options)
     {
         _mediator = mediator;
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
@@ -34,7 +32,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<AppUser>, IDbConte
     public DbSet<PaymentType> PaymentType => Set<PaymentType>();
     public DbSet<Subscription> Subscription => Set<Subscription>();
     public DbSet<TransactionType> TransactionType => Set<TransactionType>();
-    public DbSet<UserCompany> UserCompany => Set<UserCompany>();
+    public DbSet<CompanyInfo> CompanyInfo => Set<CompanyInfo>();
 
     #endregion
 

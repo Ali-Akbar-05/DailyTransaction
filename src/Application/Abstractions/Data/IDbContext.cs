@@ -13,7 +13,7 @@ public interface IDbContext
     public DbSet<PaymentType> PaymentType { get; }
     public DbSet<Subscription> Subscription { get; }
     public DbSet<TransactionType> TransactionType { get; }
-    public DbSet<UserCompany> UserCompany { get; }
+    public DbSet<CompanyInfo> CompanyInfo { get; }
     #endregion Setup
 
     #region Transaction

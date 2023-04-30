@@ -6,6 +6,7 @@ namespace Domain.Entities.Setup;
 public class AccountInfo : DeleteAbleEntity
 {
     public int Id { get; private set; }
+    public int Serial { get; private set; }
     public string IdentificationNo { get; private set; } = default!;
 
     public string? Name { get; private set; } = default!;
@@ -17,8 +18,10 @@ public class AccountInfo : DeleteAbleEntity
 
     public int CompanyId { get; private set; }
 
-
-    public UserCompany UserCompany { get; private set; } = default!;
-    public List<InvoiceMaster>? InvoiceMaster { get; private set; } 
+    public virtual AccountInfo Parent { get; private set; }
+    public virtual List<AccountInfo> ChildAccount { get;private set; }
+ 
+    public virtual CompanyInfo CompanyInfo { get; private set; } = default!;
+    
 
 }

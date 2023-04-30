@@ -6,10 +6,13 @@ public class AppUser : IdentityUser
 {
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
-    public string? ImageSrc { get; set; } 
-    public int CompanyId { get; set; }
+    public string? ImageSrc { get; set; }  
 
     public bool IsActive { get; set; }
     public DateTime CreateionDate { get; set; }
     public DateTime? LastModifiedDate { get; set; }
+
+    public virtual List<UserCompany> UserCompany { get; private set; }
+
+
 }

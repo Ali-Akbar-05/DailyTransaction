@@ -11,15 +11,16 @@ public class InvoiceMaster : DeleteAggregate
     public DateTime TransactionDate { get; private set; }
     public int AccountId { get; private set; }
 
-    public int PaymentTypeId { get; private set; }
+ 
 
     public string? Remarks { get; private set; } = default!;
 
-
+    public bool IsPaid { get; private set; }
 
     public List<InvoiceDetail> InvoiceDetail { get; private set; } = default!;
-    public PaymentType PaymentType { get; private set; } = default!;
+    
     public AccountInfo AccountInfo { get; private set; } = default!;
     public TransactionType TransactionType { get; private set; } = default!;
 
+    public List<BillPayment>? BillPayments { get; private set; }
 }
