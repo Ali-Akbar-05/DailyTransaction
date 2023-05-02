@@ -5,8 +5,8 @@ namespace Infrastructure.Identity
 {
     public class UserCompany : DeleteAbleEntity
     {
-        public string UserId { get; private set; }
-        public string CompanyId { get; private set; }
+        public string UserId { get; private set; } = default!;
+        public int CompanyId { get; private set; }
 
         public virtual CompanyInfo CompanyInfo { get; private set; }
         public virtual AppUser AppUser { get; private set; }

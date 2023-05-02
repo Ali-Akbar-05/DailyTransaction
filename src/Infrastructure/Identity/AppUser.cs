@@ -12,7 +12,7 @@ public class AppUser : IdentityUser
     public DateTime CreateionDate { get; set; }
     public DateTime? LastModifiedDate { get; set; }
 
-    public virtual List<UserCompany> UserCompany { get; private set; }
+    public virtual UserCompany UserCompany { get; private set; }
 
 
 }
