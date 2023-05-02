@@ -23,6 +23,11 @@ namespace Infrastructure.Persistence.Configurations.Transactions
                 .HasForeignKey(p => p.PaymentTypeId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne<InvoiceMaster>()
+                .WithMany()
+                .HasForeignKey(b => b.InvoiceMasterId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

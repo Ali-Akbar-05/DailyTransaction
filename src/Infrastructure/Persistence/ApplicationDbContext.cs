@@ -13,7 +13,8 @@ using System.Reflection;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<AppUser>, IDbContext
+public class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string,
+                              AppUserClaim,AppUserRole,AppUserLogin,AppRoleClaim,AppUserToken>, IDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -40,20 +41,25 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>, IDbContext
     #region  Transactions
     public DbSet<InvoiceMaster> InvoiceMaster => Set<InvoiceMaster>();
     public DbSet<InvoiceDetail> InvoiceDetail => Set<InvoiceDetail>();
+    public DbSet<BillPayment> BillPayment => Set<BillPayment>();
     #endregion
 
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
+
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         AddingSofDeletes(builder);
-        base.OnModelCreating(builder);
+
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
         base.OnConfiguring(optionsBuilder);
+        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
+  
+
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -89,5 +95,48 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>, IDbContext
     }
 
     #endregion
+
+
+    public void IdentityModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<AppUser>(t =>
+        {
+            t.HasMany(c => c.Claims)
+            .WithOne(u => u.User)
+            .HasForeignKey(f => f.UserId)
+            .IsRequired();
+
+            t.HasMany(l=>l.Logins)
+            .WithOne(u=>u.User)
+            .HasForeignKey(f => f.UserId)
+            .IsRequired();
+
+            t.HasMany(tt => tt.Tokens)
+            .WithOne(u => u.User)
+            .HasForeignKey(f => f.UserId)
+            .IsRequired();
+
+
+            t.HasMany(ur => ur.UserRoles)
+            .WithOne(u => u.User)
+            .HasForeignKey(f => f.UserId)
+            .IsRequired();
+
+        });
+
+        builder.Entity<AppRole>(t =>
+        {
+            t.HasMany(ur => ur.UserRoles)
+            .WithOne(r => r.Role)
+            .HasForeignKey(r => r.RoleId)
+            .IsRequired();
+
+            t.HasMany(rc => rc.RoleClaims)
+            .WithOne(r => r.Role)
+            .HasForeignKey(f => f.RoleId)
+            .IsRequired();
+
+        });
+    }
 
 }

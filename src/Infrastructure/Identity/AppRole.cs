@@ -12,9 +12,13 @@ public class AppRole : IdentityRole
     {
         
     }
+
     public bool IsSuperAdmin { get; set; }
     public DateTime CreateionDate { get; set; }
     public DateTime? LastModifiedDate { get; set; }
 
 
+    public virtual ICollection<AppUserRole> UserRoles { get; set; }    
+    public virtual ICollection<AppRoleClaim> RoleClaims { get; set; }    
+ 
 }
