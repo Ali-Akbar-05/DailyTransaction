@@ -25,6 +25,12 @@ namespace Infrastructure.Persistence.Configurations.Setup
             builder.Property(p => p.CompanyId)
                 .IsRequired();
 
+            builder.HasOne<CompanyInfo>()
+                .WithMany()
+                .HasForeignKey(b=>b.CompanyId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\Common\" />
+    <Folder Include="Contracts\Login\Commands\" />
+  </ItemGroup>
+
 </Project>

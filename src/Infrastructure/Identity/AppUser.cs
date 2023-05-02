@@ -12,7 +12,15 @@ public class AppUser : IdentityUser
     public DateTime CreateionDate { get; set; }
     public DateTime? LastModifiedDate { get; set; }
 
-    public virtual UserCompany UserCompany { get; private set; }
+    public virtual ICollection<AppUserClaim> Claims { get; set; }
+    public virtual ICollection<AppUserLogin> Logins { get; set; }
+    public virtual ICollection<AppUserToken> Tokens { get; set; }
+    public virtual ICollection<AppUserRole> UserRoles { get; set; }
+
+
+    public virtual List<UserCompany> UserCompany { get; private set; }
+
+
 
 
 }

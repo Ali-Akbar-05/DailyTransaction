@@ -1,4 +1,6 @@
-﻿using Domain.Primitives.Result;
+﻿using Application.Contracts.Login.DTO;
+using Domain.Primitives.Maybe;
+using Domain.Primitives.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,4 +20,6 @@ public interface IIdentityService
     Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password);
 
     Task<Result> DeleteUserAsync(string userId);
+
+    Task<Maybe<UserResponse>> ValidateUser(LoginRequest credentials);
 }
