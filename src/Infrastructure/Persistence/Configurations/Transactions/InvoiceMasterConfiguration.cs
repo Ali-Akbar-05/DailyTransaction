@@ -25,11 +25,6 @@ namespace Infrastructure.Persistence.Configurations.Transactions
                 .HasForeignKey(b => b.TransactionTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne<PaymentType>()
-                .WithMany()
-                .IsRequired(false)
-                .HasForeignKey(b=>b.PaymentTypeId)
-                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne<AccountInfo>()
                 .WithMany()
