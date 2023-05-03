@@ -12,6 +12,7 @@ public class TransactionType : Entity
     public MathematicalType MathematicalType { get; private set; } = default!;
 
     public int CompanyId { get; private set; }
+    public CompanyInfo? CompanyInfo { get; private set; }
 
 }
 

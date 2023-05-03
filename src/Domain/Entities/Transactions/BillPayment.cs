@@ -19,7 +19,8 @@ namespace Domain.Entities.Transactions
 
         public string? Remarks { get; private set; } = default!;
 
-        public PaymentType PaymentType { get; private set; } = default!;
+        public PaymentType? PaymentType { get; private set; } 
+        public InvoiceMaster? InvoiceMaster { get; private set; }
 
         #endregion  Property
 

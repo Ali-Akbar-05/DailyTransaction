@@ -42,7 +42,7 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
             {
                 entry.CurrentValues[nameof(IHaveSoftDelete.IsDeleted)] = false;
                 entry.CurrentValues[nameof(IHaveSoftDelete.CreatedDate)] = _dateTime.Now;
-                entry.CurrentValues[nameof(IHaveSoftDelete.CreatedBy)] = _currentUserService.UserId;
+                entry.CurrentValues[nameof(IHaveSoftDelete.CreatedBy)] = _currentUserService.UserId??"Nill SP";
             }
             if (entry.State == EntityState.Modified)
             {
@@ -67,7 +67,7 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
             if (entry.State == EntityState.Added)
             { 
                 entry.CurrentValues[nameof(IHaveAudit.CreatedDate)] = _dateTime.Now;
-                entry.CurrentValues[nameof(IHaveAudit.CreatedBy)] = _currentUserService.UserId;
+                entry.CurrentValues[nameof(IHaveAudit.CreatedBy)] = _currentUserService.UserId ?? "Nill SP";
             }
             if (entry.State == EntityState.Modified)
             {
@@ -88,7 +88,7 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
             {
                 
                 entry.CurrentValues[nameof(IHaveCreator.CreatedDate)] = _dateTime.Now;
-                entry.CurrentValues[nameof(IHaveCreator.CreatedBy)] = _currentUserService.UserId;
+                entry.CurrentValues[nameof(IHaveCreator.CreatedBy)] = _currentUserService.UserId ?? "Nill SP";
             }
           
 

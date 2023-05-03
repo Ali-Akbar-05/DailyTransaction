@@ -10,9 +10,15 @@ internal sealed class InvoiceDetailConfiguration : IEntityTypeConfiguration<Invo
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasOne<InvoiceMaster>()
+        builder.Property(b => b.Rate)
+            .HasPrecision(18, 5);
+        builder.Property(b => b.Quantity)
+           .HasPrecision(18, 3);
+        builder.Property(b => b.Amount)
+           .HasPrecision(18, 2);
+        builder.HasOne(b=>b.InvoiceMaster)
             .WithMany()
-            .HasForeignKey(x => x.InvoiceMaster)
+            .HasForeignKey(x => x.MasterId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.ItemInfo)

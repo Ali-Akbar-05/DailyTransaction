@@ -23,10 +23,10 @@ internal class ItemInfoConfiguration : IEntityTypeConfiguration<ItemInfo>
             .HasForeignKey(x => x.ParentId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasOne<CompanyInfo>()
+        builder.HasOne(b=>b.CompanyInfo)
             .WithMany()
             .IsRequired()
-            .HasForeignKey("_companyId")
+            .HasForeignKey(f=>f.CompanyId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

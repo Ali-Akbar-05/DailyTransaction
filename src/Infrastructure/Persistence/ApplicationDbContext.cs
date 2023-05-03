@@ -7,14 +7,13 @@ using Infrastructure.Persistence.Interceptors;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string,
-                              AppUserClaim,AppUserRole,AppUserLogin,AppRoleClaim,AppUserToken>, IDbContext
+public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string,
+                              AppUserClaim, AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>, IDbContext
 {
     private readonly IMediator _mediator;
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -49,7 +48,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string,
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
+        IdentityModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         AddingSofDeletes(builder);
 
@@ -59,7 +58,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string,
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
-  
+
 
     }
 
@@ -102,41 +101,63 @@ public class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string,
     {
         builder.Entity<AppUser>(t =>
         {
-            t.HasMany(c => c.Claims)
-            .WithOne(u => u.User)
-            .HasForeignKey(f => f.UserId)
+            t.ToTable("AppUser");
+
+        });
+
+        builder.Entity<AppUserRole>(t =>
+        {
+            t.ToTable("AppUserRole");
+
+            t.HasOne(b => b.User)
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
             .IsRequired();
 
-            t.HasMany(l=>l.Logins)
-            .WithOne(u=>u.User)
-            .HasForeignKey(f => f.UserId)
+            t.HasOne(b=>b.Role)
+            .WithMany()
+            .HasForeignKey(b=>b.RoleId)
             .IsRequired();
+        });
 
-            t.HasMany(tt => tt.Tokens)
-            .WithOne(u => u.User)
-            .HasForeignKey(f => f.UserId)
+        builder.Entity<AppUserClaim>(t =>
+        {
+            t.HasOne(b => b.User)
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
             .IsRequired();
+        });
 
-
-            t.HasMany(ur => ur.UserRoles)
-            .WithOne(u => u.User)
-            .HasForeignKey(f => f.UserId)
+        builder.Entity<AppUserLogin>(t =>
+        {
+            t.HasOne(b => b.User)
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
             .IsRequired();
+        });
 
+        builder.Entity<AppUserToken>(t =>
+        {
+            t.ToTable("AppUserToken");
+            t.HasOne(b => b.User)
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
+            .IsRequired();
         });
 
         builder.Entity<AppRole>(t =>
         {
-            t.HasMany(ur => ur.UserRoles)
-            .WithOne(r => r.Role)
-            .HasForeignKey(r => r.RoleId)
-            .IsRequired();
+            t.ToTable("AppRole");
+        });
 
-            t.HasMany(rc => rc.RoleClaims)
-            .WithOne(r => r.Role)
-            .HasForeignKey(f => f.RoleId)
-            .IsRequired();
+        builder.Entity<AppRoleClaim>(t =>
+        {
+            t.ToTable("AppRoleClaim");
 
+            t.HasOne(b=>b.Role)
+            .WithMany()
+            .HasForeignKey(b => b.RoleId)
+            .IsRequired();
         });
     }
 

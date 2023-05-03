@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Configurations.Setup
             builder.Property(p => p.Name)
                 .HasMaxLength(50);
 
-            builder.HasOne<CompanyInfo>()
+            builder.HasOne(b=>b.CompanyInfo)
                 .WithMany()
                 .HasForeignKey(b=>b.CompanyId)
                 .OnDelete(DeleteBehavior.NoAction);
