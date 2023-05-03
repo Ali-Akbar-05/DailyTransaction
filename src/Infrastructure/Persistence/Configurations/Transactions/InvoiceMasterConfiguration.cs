@@ -20,13 +20,13 @@ namespace Infrastructure.Persistence.Configurations.Transactions
                 .HasMaxLength(100)
                 .IsUnicode();
 
-            builder.HasOne<TransactionType>()
+            builder.HasOne(b=>b.TransactionType)
                 .WithMany()
                 .HasForeignKey(b => b.TransactionTypeId)
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            builder.HasOne<AccountInfo>()
+            builder.HasOne(b=>b.AccountInfo)
                 .WithMany()
                 .HasForeignKey(x => x.AccountId)
                 .OnDelete(DeleteBehavior.NoAction);

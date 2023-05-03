@@ -43,14 +43,15 @@ public class ApplicationDbContextDefaultData
     {
         try
         {
+            await AddRole();
+         var userId=   await AddUser();
             await AddSubscription();
 
             await AddCompany();
 
 
 
-            await AddRole();
-            await AddUser();
+  
         }
         catch (Exception ex)
         {
@@ -119,9 +120,10 @@ public class ApplicationDbContextDefaultData
         }
     }
      
-    private async Task AddUser()
+    private async Task<string> AddUser()
     {
         #region
+        string superAdminUserId = string.Empty;
         var superAdmin = new AppUser
         {
             UserName = "admin@safe.com",
@@ -129,12 +131,18 @@ public class ApplicationDbContextDefaultData
             FirstName = "Md. Ali",
             LastName = "Akbar", 
         };
-        if(_userManager.Users.All(u=>u.UserName!=superAdmin.UserName || u.Email != superAdmin.Email))
+        var _superAdimin = _userManager.Users.All(u => u.UserName != superAdmin.UserName || u.Email != superAdmin.Email);
+        if (_superAdimin)
         {
             await _userManager.CreateAsync(superAdmin, "super!");
             await _userManager.AddToRoleAsync(superAdmin, SystemRoles.superAdmin);
 
             _dbCon.UserCompany.Add(UserCompany.Create(1,superAdmin.Id));
+            superAdminUserId = superAdmin.Id;
+        }
+        else
+        {
+            superAdminUserId = (await _userManager.FindByNameAsync(superAdmin.UserName)).Id;
         }
         #endregion
 
@@ -153,6 +161,7 @@ public class ApplicationDbContextDefaultData
             _dbCon.UserCompany.Add(UserCompany.Create(1, admin.Id));
         }
         #endregion
+        return superAdminUserId;
     }
     #endregion
 }

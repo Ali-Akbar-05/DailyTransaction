@@ -1,5 +1,4 @@
-﻿using Domain.Entities.Setup;
-using Domain.Entities.Transactions;
+﻿using Domain.Entities.Transactions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,18 +13,23 @@ namespace Infrastructure.Persistence.Configurations.Transactions
             builder.Property(p => p.PaymentHints)
                 .HasMaxLength(50);
 
+            builder.Property(b => b.PaymentAmount)
+   .HasPrecision(18, 2);
+            builder.Property(b => b.WaiverAmount)
+.HasPrecision(18, 2);
+
             builder.Property(p => p.Remarks)
              .IsUnicode()
              .HasMaxLength(100);
 
-            builder.HasOne<PaymentType>()
+            builder.HasOne(b => b.PaymentType)
                 .WithMany()
                 .HasForeignKey(p => p.PaymentTypeId)
                 .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
+   ;
 
-            builder.HasOne<InvoiceMaster>()
-                .WithMany()
+            builder.HasOne(b => b.InvoiceMaster)
+                .WithMany(b => b.BillPayments)
                 .HasForeignKey(b => b.InvoiceMasterId)
                 .OnDelete(DeleteBehavior.NoAction);
         }

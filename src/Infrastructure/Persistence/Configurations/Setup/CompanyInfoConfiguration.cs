@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Setup;
+using Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -29,5 +30,7 @@ internal sealed class CompanyInfoConfiguration : IEntityTypeConfiguration<Compan
             .WithMany()
             .HasForeignKey(b => b.SubscriptionId)
             .OnDelete(DeleteBehavior.NoAction);
+
+
     }
 }

@@ -25,7 +25,7 @@ namespace Infrastructure.Persistence.Configurations.Setup
             builder.Property(p => p.CompanyId)
                 .IsRequired();
 
-            builder.HasOne<CompanyInfo>()
+            builder.HasOne(b=>b.CompanyInfo)
                 .WithMany()
                 .HasForeignKey(b=>b.CompanyId)
                 .IsRequired()

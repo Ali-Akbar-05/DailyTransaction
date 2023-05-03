@@ -19,8 +19,11 @@ public class InvoiceMaster : DeleteAggregate
 
     public List<InvoiceDetail> InvoiceDetail { get; private set; } = default!;
     
-    public AccountInfo AccountInfo { get; private set; } = default!;
-    public TransactionType TransactionType { get; private set; } = default!;
+
+
+
+    public AccountInfo? AccountInfo { get; private set; } 
+    public TransactionType? TransactionType { get; private set; }
 
     public List<BillPayment>? BillPayments { get; private set; }
 }
