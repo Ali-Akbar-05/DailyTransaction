@@ -13,5 +13,15 @@ namespace Infrastructure.Identity
  
         public virtual CompanyInfo Company { get; private set; }
         public virtual AppUser User { get; private set; }
+
+
+        public static UserCompany Create(int companyId,string userId)
+        {
+            UserCompany company = new UserCompany();
+            company.CompanyId = companyId;  
+            company.UserId = userId;    
+            return company;
+            
+        }
     }
 }
