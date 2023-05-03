@@ -26,7 +26,17 @@ namespace Infrastructure
 
             services.AddScoped<ApplicationDbContextDefaultData>();
 
-            services.AddIdentity<AppUser, AppRole>()
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -39,6 +49,6 @@ namespace Infrastructure
             //services.AddTransient<IIdentityService>
             return services;
         }
-    
+
     }
 }

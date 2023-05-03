@@ -14,12 +14,14 @@ public interface IDbContext
     public DbSet<Subscription> Subscription { get; }
     public DbSet<TransactionType> TransactionType { get; }
     public DbSet<CompanyInfo> CompanyInfo { get; }
+    
     #endregion Setup
 
     #region Transaction
 
     public DbSet<InvoiceMaster> InvoiceMaster { get; }
     public DbSet<InvoiceDetail> InvoiceDetail { get; }
+    public DbSet<BillPayment> BillPayment { get; }
 
 
     #endregion

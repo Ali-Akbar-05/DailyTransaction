@@ -12,3 +12,12 @@ public enum MathematicalType
     Negetive=-1
 }
 
+public static class SystemRoles
+{
+    public static string superAdmin = "Super Admin";
+    public static string admin = "Admin";
+    public static string manager = "Manager";
+    public static string user = "User";
+
+}
+

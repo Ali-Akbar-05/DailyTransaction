@@ -34,6 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser,AppRole,string,
     public DbSet<Subscription> Subscription => Set<Subscription>();
     public DbSet<TransactionType> TransactionType => Set<TransactionType>();
     public DbSet<CompanyInfo> CompanyInfo => Set<CompanyInfo>();
+    public DbSet<UserCompany> UserCompany => Set<UserCompany>();
 
     #endregion
 

@@ -1,10 +1,13 @@
 ﻿using Domain.Core;
+using System.Net.NetworkInformation;
 
 namespace Domain.Entities.Setup;
 
 public class CompanyInfo : AuditableEntity
 {
+
     public int Id { get; private set; }
+    public  string Code { get; private set; } = default!;
     /// <summary>
     /// Get Company name
     /// </summary>
@@ -36,5 +39,28 @@ public class CompanyInfo : AuditableEntity
     public Subscription Subscription { get; private set; } = default!;
 
 
+
+    public static CompanyInfo Create(string code,string companyName, string companyLogo)
+    {
+        var companyInfo = new CompanyInfo(); 
+        companyInfo.CompanyLogo = companyLogo;
+        companyInfo.IsActive=true;
+        companyInfo.LockoutEnabled = false;
+        companyInfo.SubscriptionId = 1;
+        companyInfo.SubscriptionEndDate= DateTime.Now.AddYears(1);
+        return companyInfo; ;
+    }
+
+    public static CompanyInfo TestData(string? companyName, string? companyLogo)
+    {
+        var companyInfo = new CompanyInfo();
+        companyInfo.CompanyName = companyName?? "Safe";
+        companyInfo.IsActive = true;
+        companyInfo.LockoutEnabled = false;
+        companyInfo.SubscriptionId = 1;
+        companyInfo.SubscriptionEndDate = DateTime.Now.AddDays(Subscription.TestData(null,null).ConditinalDayes);
+
+        return companyInfo; ;
+    }
 }
 
