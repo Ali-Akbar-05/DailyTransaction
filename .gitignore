@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /src/Infrastructure/Persistence/DbConfig.txt
 /src/DT.API/appsettings.json
+

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entities.Setup;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Identity;
 
@@ -17,8 +18,8 @@ public class AppUser : IdentityUser
     public virtual ICollection<AppUserToken> Tokens { get; set; }
     public virtual ICollection<AppUserRole> UserRoles { get; set; }
 
-
-    public virtual List<UserCompany> UserCompany { get; private set; }
+ 
+    
 
 
 

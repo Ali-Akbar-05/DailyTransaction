@@ -34,7 +34,7 @@ public class ApplicationDbContextDefaultData
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex,"An Error occurred while initialising the database");
+            _logger.LogError(ex, "An Error occurred while initialising the database");
             throw new Exception(ex.Message);
         }
     }
@@ -43,15 +43,24 @@ public class ApplicationDbContextDefaultData
     {
         try
         {
-            await AddRole();
-         var userId=   await AddUser();
             await AddSubscription();
-
             await AddCompany();
+            await AddRole();
+            await AddUser();
+           
 
 
 
-  
+      
+
+
+    
+
+
+
+
+
+
         }
         catch (Exception ex)
         {
@@ -66,7 +75,7 @@ public class ApplicationDbContextDefaultData
         if (!hasSubscription)
         {
             _dbCon.Subscription.Add(Subscription.TestData(null, null));
-          
+
             await _dbCon.SaveChangesAsync();
         }
     }
@@ -76,8 +85,8 @@ public class ApplicationDbContextDefaultData
         if (!hasCompany)
         {
             var companyInfo = new List<CompanyInfo>();
-            companyInfo.Add(CompanyInfo.TestData(null,null));
-            companyInfo.Add(CompanyInfo.TestData("Safe Job",null));
+            companyInfo.Add(CompanyInfo.TestData("A1",null, null));
+            companyInfo.Add(CompanyInfo.TestData("A2","Safe Job", null));
             _dbCon.CompanyInfo.AddRange(companyInfo);
             await _dbCon.SaveChangesAsync();
 
@@ -88,7 +97,7 @@ public class ApplicationDbContextDefaultData
     #endregion
 
     #region Identity
-   
+
     private async Task AddRole()
     {
         var superAdmin = new AppRole(SystemRoles.superAdmin);
@@ -119,17 +128,18 @@ public class ApplicationDbContextDefaultData
             await _roleManager.CreateAsync(user);
         }
     }
-     
-    private async Task<string> AddUser()
+
+    private async Task AddUser()
     {
         #region
-        string superAdminUserId = string.Empty;
+        
         var superAdmin = new AppUser
         {
+            Id="1",
             UserName = "admin@safe.com",
             Email = "aliakbar.robintex@gmail.com",
             FirstName = "Md. Ali",
-            LastName = "Akbar", 
+            LastName = "Akbar",
         };
         var _superAdimin = _userManager.Users.All(u => u.UserName != superAdmin.UserName || u.Email != superAdmin.Email);
         if (_superAdimin)
@@ -137,18 +147,17 @@ public class ApplicationDbContextDefaultData
             await _userManager.CreateAsync(superAdmin, "super!");
             await _userManager.AddToRoleAsync(superAdmin, SystemRoles.superAdmin);
 
-            _dbCon.UserCompany.Add(UserCompany.Create(1,superAdmin.Id));
-            superAdminUserId = superAdmin.Id;
+            _dbCon.UserCompany.Add(UserCompany.Create(1, superAdmin.Id));
+            await _dbCon.SaveChangesAsync();
+           
         }
-        else
-        {
-            superAdminUserId = (await _userManager.FindByNameAsync(superAdmin.UserName)).Id;
-        }
+
         #endregion
 
         #region
         var admin = new AppUser
         {
+            Id = "2",
             UserName = "jobayer@safe.com",
             Email = "jobayershoaib007@gmail.com",
             FirstName = "Jobayer",
@@ -159,9 +168,10 @@ public class ApplicationDbContextDefaultData
             await _userManager.CreateAsync(admin, "super!");
             await _userManager.AddToRoleAsync(admin, SystemRoles.admin);
             _dbCon.UserCompany.Add(UserCompany.Create(1, admin.Id));
+            await _dbCon.SaveChangesAsync();
         }
         #endregion
-        return superAdminUserId;
+        
     }
     #endregion
 }

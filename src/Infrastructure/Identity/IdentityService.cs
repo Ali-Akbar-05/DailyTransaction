@@ -69,7 +69,7 @@ namespace Infrastructure.Identity
                     UserId= user.Id,    
                     UserName    =user.UserName,
                     Roles=user.UserRoles?.Select(x=>x.Role.Name)?.ToList(),
-                    CompanyId= user.UserCompany.Select(x => x.CompanyId).First()
+                    
             };
                 return response;
 

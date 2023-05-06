@@ -86,7 +86,6 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AppRoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -94,11 +93,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AppRoleClaim", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AppRoleClaim_AppRole_AppRoleId",
-                        column: x => x.AppRoleId,
-                        principalTable: "AppRole",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AppRoleClaim_AppRole_RoleId",
                         column: x => x.RoleId,
@@ -108,33 +102,62 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AppUserClaim",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserClaim", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppUserClaim_AppUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppUserLogin",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppUserLogin", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AppUserLogin_AppUser_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUser",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppUserRole",
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AppRoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AppUserRole", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_AppUserRole_AppRole_AppRoleId",
-                        column: x => x.AppRoleId,
-                        principalTable: "AppRole",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AppUserRole_AppRole_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AppRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AppUserRole_AppUser_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AppUserRole_AppUser_UserId",
                         column: x => x.UserId,
@@ -150,72 +173,13 @@ namespace Infrastructure.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AppUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AppUserToken_AppUser_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_AppUserToken_AppUser_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AppUser_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AppUser_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AppUser_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AppUser_UserId",
                         column: x => x.UserId,
                         principalTable: "AppUser",
                         principalColumn: "Id",
@@ -375,7 +339,6 @@ namespace Infrastructure.Migrations
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -388,11 +351,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserCompany", x => new { x.CompanyId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_UserCompany_AppUser_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AppUser",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserCompany_AppUser_UserId",
                         column: x => x.UserId,
@@ -545,11 +503,6 @@ namespace Infrastructure.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppRoleClaim_AppRoleId",
-                table: "AppRoleClaim",
-                column: "AppRoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AppRoleClaim_RoleId",
                 table: "AppRoleClaim",
                 column: "RoleId");
@@ -567,44 +520,19 @@ namespace Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUserRole_AppRoleId",
-                table: "AppUserRole",
-                column: "AppRoleId");
+                name: "IX_AppUserClaim_UserId",
+                table: "AppUserClaim",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppUserRole_AppUserId",
-                table: "AppUserRole",
-                column: "AppUserId");
+                name: "IX_AppUserLogin_UserId",
+                table: "AppUserLogin",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppUserRole_RoleId",
                 table: "AppUserRole",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AppUserToken_AppUserId",
-                table: "AppUserToken",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_AppUserId",
-                table: "AspNetUserClaims",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_AppUserId",
-                table: "AspNetUserLogins",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BillPayment_InvoiceMasterId",
@@ -672,11 +600,6 @@ namespace Infrastructure.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserCompany_AppUserId",
-                table: "UserCompany",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserCompany_UserId",
                 table: "UserCompany",
                 column: "UserId");
@@ -689,16 +612,16 @@ namespace Infrastructure.Migrations
                 name: "AppRoleClaim");
 
             migrationBuilder.DropTable(
+                name: "AppUserClaim");
+
+            migrationBuilder.DropTable(
+                name: "AppUserLogin");
+
+            migrationBuilder.DropTable(
                 name: "AppUserRole");
 
             migrationBuilder.DropTable(
                 name: "AppUserToken");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
 
             migrationBuilder.DropTable(
                 name: "BillPayment");
