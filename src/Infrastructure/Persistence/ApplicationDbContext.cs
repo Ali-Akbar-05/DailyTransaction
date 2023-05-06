@@ -103,61 +103,68 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, string,
         {
             t.ToTable("AppUser");
 
+            t.HasMany(e => e.Claims)
+          .WithOne(e => e.User)
+          .HasForeignKey(ur => ur.UserId)
+          .IsRequired();
+
+            t.HasMany(e => e.Logins)
+              .WithOne(e => e.User)
+              .HasForeignKey(ur => ur.UserId)
+              .IsRequired();
+
+            t.HasMany(e => e.Tokens)
+          .WithOne(e => e.User)
+          .HasForeignKey(ur => ur.UserId)
+          .IsRequired();
+
+            t.HasMany(e => e.UserRoles)
+            .WithOne(e => e.User)
+            .HasForeignKey(ur => ur.UserId)
+            .IsRequired();
         });
 
         builder.Entity<AppUserRole>(t =>
         {
-            t.ToTable("AppUserRole");
-
-            t.HasOne(b => b.User)
-            .WithMany()
-            .HasForeignKey(b => b.UserId)
-            .IsRequired();
-
-            t.HasOne(b=>b.Role)
-            .WithMany()
-            .HasForeignKey(b=>b.RoleId)
-            .IsRequired();
+            t.ToTable("AppUserRole"); 
         });
 
         builder.Entity<AppUserClaim>(t =>
         {
-            t.HasOne(b => b.User)
-            .WithMany()
-            .HasForeignKey(b => b.UserId)
-            .IsRequired();
+            t.ToTable("AppUserClaim");
         });
 
         builder.Entity<AppUserLogin>(t =>
         {
-            t.HasOne(b => b.User)
-            .WithMany()
-            .HasForeignKey(b => b.UserId)
-            .IsRequired();
+            t.ToTable("AppUserLogin");
         });
 
         builder.Entity<AppUserToken>(t =>
         {
             t.ToTable("AppUserToken");
-            t.HasOne(b => b.User)
-            .WithMany()
-            .HasForeignKey(b => b.UserId)
-            .IsRequired();
         });
+
+     
+
 
         builder.Entity<AppRole>(t =>
         {
             t.ToTable("AppRole");
+
+            t.HasMany(e => e.UserRoles)
+              .WithOne(e => e.Role)
+              .HasForeignKey(ur => ur.RoleId)
+              .IsRequired();
+
+            t.HasMany(e => e.RoleClaims)
+              .WithOne(e => e.Role)
+              .HasForeignKey(ur => ur.RoleId)
+              .IsRequired();
         });
 
         builder.Entity<AppRoleClaim>(t =>
         {
             t.ToTable("AppRoleClaim");
-
-            t.HasOne(b=>b.Role)
-            .WithMany()
-            .HasForeignKey(b => b.RoleId)
-            .IsRequired();
         });
     }
 

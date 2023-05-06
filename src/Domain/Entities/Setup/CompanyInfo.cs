@@ -21,7 +21,7 @@ public class CompanyInfo : AuditableEntity
     /// Gets or sets a flag indicating if the company could be locked out.
     /// </summary>
     /// <value>True if the company could be locked out, otherwise false.</value>
-    public bool LockoutEnabled { get; set; }
+    public bool LockoutEnabled { get; private set; }
 
     /// <summary>
     /// Gets or sets the date and time, in UTC, when any company lockout ends.
@@ -29,7 +29,7 @@ public class CompanyInfo : AuditableEntity
     /// <remarks>
     /// A value in the past means the company is not locked out.
     /// </remarks>
-    public DateTime? LockoutEnd { get; set; }
+    public DateTime? LockoutEnd { get; private set; }
 
     public int SubscriptionId { get; private set; }
 
@@ -43,6 +43,7 @@ public class CompanyInfo : AuditableEntity
     public static CompanyInfo Create(string code,string companyName, string companyLogo)
     {
         var companyInfo = new CompanyInfo(); 
+        companyInfo.Code = code;    
         companyInfo.CompanyLogo = companyLogo;
         companyInfo.IsActive=true;
         companyInfo.LockoutEnabled = false;
@@ -51,9 +52,10 @@ public class CompanyInfo : AuditableEntity
         return companyInfo; ;
     }
 
-    public static CompanyInfo TestData(string? companyName, string? companyLogo)
+    public static CompanyInfo TestData(string code,string? companyName, string? companyLogo)
     {
         var companyInfo = new CompanyInfo();
+        companyInfo.Code = code;
         companyInfo.CompanyName = companyName?? "Safe";
         companyInfo.IsActive = true;
         companyInfo.LockoutEnabled = false;

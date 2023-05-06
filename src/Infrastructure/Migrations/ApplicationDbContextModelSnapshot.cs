@@ -571,9 +571,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppRoleId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
@@ -585,8 +582,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppRoleId");
 
                     b.HasIndex("RoleId");
 
@@ -686,9 +681,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
 
@@ -701,11 +693,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
+                    b.ToTable("AppUserClaim", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Identity.AppUserLogin", b =>
@@ -714,9 +704,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
@@ -728,11 +715,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
+                    b.ToTable("AppUserLogin", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Identity.AppUserRole", b =>
@@ -743,17 +728,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AppRoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("AppRoleId");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("RoleId");
 
@@ -771,15 +746,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("AppUserToken", (string)null);
                 });
@@ -790,9 +760,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AppUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
@@ -821,8 +788,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CompanyId", "UserId");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("UserId");
 
@@ -964,12 +929,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.AppRoleClaim", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.AppRole", null)
-                        .WithMany("RoleClaims")
-                        .HasForeignKey("AppRoleId");
-
                     b.HasOne("Infrastructure.Identity.AppRole", "Role")
-                        .WithMany()
+                        .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -979,12 +940,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.AppUserClaim", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.AppUser", null)
-                        .WithMany("Claims")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Infrastructure.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -994,12 +951,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.AppUserLogin", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.AppUser", null)
-                        .WithMany("Logins")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Infrastructure.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1009,22 +962,14 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.AppUserRole", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.AppRole", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("AppRoleId");
-
-                    b.HasOne("Infrastructure.Identity.AppUser", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Infrastructure.Identity.AppRole", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Infrastructure.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1036,12 +981,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.AppUserToken", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.AppUser", null)
-                        .WithMany("Tokens")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Infrastructure.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1051,10 +992,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Identity.UserCompany", b =>
                 {
-                    b.HasOne("Infrastructure.Identity.AppUser", null)
-                        .WithMany("UserCompany")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Domain.Entities.Setup.CompanyInfo", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
@@ -1105,8 +1042,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Logins");
 
                     b.Navigation("Tokens");
-
-                    b.Navigation("UserCompany");
 
                     b.Navigation("UserRoles");
                 });
